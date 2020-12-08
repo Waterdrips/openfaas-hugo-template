@@ -12,7 +12,7 @@ RUN chmod +x /usr/bin/getflavor.sh
 RUN apk update && apk add py-pygments ca-certificates bash git && rm -rf /var/cache/apk/*
 
 ENV HUGO_VERSION 0.76.5
-ENV FLAVOR Linux-64bit
+ENV FLAVOR Linux-ARM
 RUN export FLAVOR=$('/bin/sh -c "source /usr/bin/getflavor.sh $BUILDPLATFORM"')
 ENV HUGO_BINARY hugo_${HUGO_VERSION}_${FLAVOR}
 ENV HUGO_ENV=production
