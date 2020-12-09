@@ -23,6 +23,13 @@ RUN tar xzf /usr/local/hugo/${HUGO_BINARY}.tar.gz -C /usr/local/hugo/ \
 	&& ln -s /usr/local/hugo/hugo /usr/local/bin/hugo \
 	&& rm /usr/local/hugo/${HUGO_BINARY}.tar.gz
 
+
+ADD https://github.com/budparr/gohugo-theme-ananke/archive/master.zip ananke.zip
+RUN unzip ananke.zip
+RUN ls
+RUN mkdir -p /home/app/themes
+RUN mv gohugo-theme-ananke-master /home/app/themes/ananke
+
 WORKDIR /home/app
 COPY ./function .
 
@@ -31,7 +38,7 @@ RUN ["hugo", "--gc", "--minify"]
 FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine:3.12 AS runtime
 
 WORKDIR /home/app
-
+COPY --from=build /home/app/themes themes
 COPY --from=build /home/app/public public
 COPY --from=build /usr/bin/fwatchdog .
 
